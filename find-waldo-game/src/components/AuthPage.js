@@ -1,5 +1,4 @@
 import { GoogleAuthProvider } from 'firebase/auth';
-import Header from './Header';
 
 const provider = new GoogleAuthProvider();
 
