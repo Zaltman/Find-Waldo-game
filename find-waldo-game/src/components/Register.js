@@ -1,8 +1,8 @@
-// import React from 'react';
-import { useState } from 'react';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
 
 export default function Register() {
+  const auth = getAuth();
   const {
     register,
     handleSubmit,
@@ -10,17 +10,36 @@ export default function Register() {
     setError,
     formState: { errors },
   } = useForm();
-  const [rerender, setRerender] = useState(0);
+  // const [rerender, setRerender] = useState(0);
   const watchPw1 = watch('Password');
   const watchPw2 = watch('Password2');
+  const email = watch('Email');
+  const fName = watch('First name');
+  const lName = watch('Last name');
+
   const onSubmit = (e) => {
-    console.log(watchPw1);
-    console.log(watchPw2);
     if (watchPw1 !== watchPw2) {
       setError('Password2', { type: 'focus' }, { shouldFocus: true });
+      return;
     }
-    console.log(errors.Password2);
-    setRerender(rerender + 1);
+    console.log(email);
+    createUserWithEmailAndPassword(auth, email, watchPw2)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+        console.log(errorCode);
+        console.log(errorMessage);
+        if (errorCode == 'auth/email-already-in-use') {
+          setError('Email', { type: 'Email already registered' }, { shouldFocus: true });
+        }
+      });
   };
   let emailErrMsg = '';
   if (errors.Email) {
@@ -68,16 +87,16 @@ export default function Register() {
         id="fName"
         {...register('First name', { required: true, maxLength: 80 })}
       />
-      <label htmlFor="lName">Last name</label>
 
+      <label htmlFor="lName">Last name</label>
       <input
         type="text"
         id="lName"
         placeholder="Last name"
         {...register('Last name', { required: true, maxLength: 100 })}
       />
-      <label htmlFor="emailInput">Email</label>
 
+      <label htmlFor="emailInput">Email</label>
       <input
         type="text"
         id="emailInput"
