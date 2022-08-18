@@ -6,6 +6,7 @@ import Homepage from './components/Homepage';
 import GamePage from './components/GamePage';
 import AuthPage from './components/AuthPage';
 import Register from './components/Register';
+import EmailLogin from './components/EmailLogin';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBWMBTSFZZbqkQY7weHsVi50NvIXJNUbqw',
@@ -30,6 +31,7 @@ function App() {
         <Route path="/homepage" element={<Homepage />} />
         <Route path="/gamepage" element={<GamePage />} />
         <Route path="/authpage" element={<AuthPage />} />
+        <Route path="/loginemail" element={<EmailLogin />} />
       </Routes>
     </BrowserRouter>
   );
