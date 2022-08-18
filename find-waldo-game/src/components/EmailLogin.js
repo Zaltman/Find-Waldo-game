@@ -1,9 +1,29 @@
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
-
+import Header from './Header';
 export default function EmailLogin() {
   const auth = getAuth();
+  let userEmail = '';
 
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+
+      const uid = user.uid;
+      console.log(user.email);
+      userEmail = user.email;
+      console.log('auth state change logged in');
+
+      console.log({ userEmail });
+      // ...
+    } else {
+      // User is signed out
+      console.log('auth state change sign out');
+
+      // ...
+    }
+  });
   const {
     register,
     watch,
@@ -30,7 +50,6 @@ export default function EmailLogin() {
         const errorCode = error.code;
         const errorMessage = error.message;
         setError('Password', { type: errorCode }, { shouldFocus: true });
-        // console.log(errorCode);
         console.log(errors.Password);
         passwordErrMsg = errorCode;
       });
@@ -67,26 +86,28 @@ export default function EmailLogin() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} id="regForm">
-      <label htmlFor="emailInput">Email</label>
-      <input
-        type="text"
-        id="emailInput"
-        placeholder="Email"
-        {...register('Email', { required: true, minLength: 4, pattern: /^\S+@\S+$/i })}
-      />
-      {errors.Email && <span>{emailErrMsg}</span>}
+    <div>
+      <Header />
+      <form onSubmit={handleSubmit(onSubmit)} id="regForm">
+        <label htmlFor="emailInput">Email</label>
+        <input
+          type="text"
+          id="emailInput"
+          placeholder="Email"
+          {...register('Email', { required: true, minLength: 4, pattern: /^\S+@\S+$/i })}
+        />
+        {errors.Email && <span>{emailErrMsg}</span>}
 
-      <label htmlFor="passwordInput">Password</label>
-      <input
-        id="passwordInput"
-        type="password"
-        placeholder="Password"
-        {...register('Password', { required: true, minLength: 6, maxLength: 20 })}
-      />
-      {errors.Password && <span>{passwordErrMsg}</span>}
-
-      <input type="submit" />
-    </form>
+        <label htmlFor="passwordInput">Password</label>
+        <input
+          id="passwordInput"
+          type="password"
+          placeholder="Password"
+          {...register('Password', { required: true, minLength: 6, maxLength: 20 })}
+        />
+        {errors.Password && <span>{passwordErrMsg}</span>}
+        <input type="submit" />
+      </form>
+    </div>
   );
 }
