@@ -12,6 +12,7 @@ body {
 } */
 .flex {
   display: flex;
+  align-items: center;
 }
 
 .App-header {
@@ -39,6 +40,7 @@ a {
   margin: 5px;
   padding: 5px;
   border-radius: 5px;
+  height: fit-content;
 }
 
 @keyframes App-logo-spin {

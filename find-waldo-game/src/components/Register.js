@@ -1,6 +1,6 @@
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
-
+import { Link } from 'react-router-dom';
 export default function Register() {
   const auth = getAuth();
   const {
@@ -123,6 +123,7 @@ export default function Register() {
       {errors.Password2 && <span>{password2ErrMsg}</span>}
 
       <input type="submit" />
+      <Link to={'/loginemail'}>Already Have account? Log in</Link>
     </form>
   );
 }

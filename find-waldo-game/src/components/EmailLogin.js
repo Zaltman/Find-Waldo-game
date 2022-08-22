@@ -1,6 +1,7 @@
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
 import Header from './Header';
+import { Link } from 'react-router-dom';
 export default function EmailLogin() {
   const auth = getAuth();
   let userEmail = '';
@@ -42,6 +43,7 @@ export default function EmailLogin() {
         console.log('ain');
         const user = userCredential.user;
         console.log(user);
+        window.location.href = '/';
 
         // ...
       })
@@ -107,6 +109,7 @@ export default function EmailLogin() {
         />
         {errors.Password && <span>{passwordErrMsg}</span>}
         <input type="submit" />
+        <Link to={'/register'}>No account? Register</Link>
       </form>
     </div>
   );
