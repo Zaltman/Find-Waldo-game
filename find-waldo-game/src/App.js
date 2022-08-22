@@ -9,6 +9,7 @@ import Register from './components/Register';
 import EmailLogin from './components/EmailLogin';
 import Header from './components/Header';
 import { useState } from 'react';
+import Level1 from './components/Level1';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBWMBTSFZZbqkQY7weHsVi50NvIXJNUbqw',
@@ -72,6 +73,7 @@ function App() {
         <Route path="/gamepage" element={<GamePage />} />
         <Route path="/authpage" element={<AuthPage />} />
         <Route path="/loginemail" element={<EmailLogin />} />
+        <Route path="/level1" element={<Level1 />} />
       </Routes>
     </BrowserRouter>
   );

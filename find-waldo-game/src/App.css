@@ -59,3 +59,8 @@ a {
   justify-content: center;
   margin-top: 50px;
 }
+
+.gamePage {
+  display: flex;
+  justify-content: center;
+}
