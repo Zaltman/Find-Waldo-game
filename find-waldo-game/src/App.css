@@ -64,3 +64,8 @@ a {
   display: flex;
   justify-content: center;
 }
+
+.gameImg {
+  width: 100%;
+  display: block;
+}

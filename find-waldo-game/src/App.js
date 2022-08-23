@@ -62,6 +62,11 @@ function App() {
         console.log(error);
       });
   }
+  let handleImgClick = (e) => {
+    const x = e.pageX - e.target.offsetLeft;
+    const y = e.pageY - e.target.offsetTop;
+    console.log(x, y);
+  };
 
   return (
     <BrowserRouter>
@@ -73,7 +78,7 @@ function App() {
         <Route path="/gamepage" element={<GamePage />} />
         <Route path="/authpage" element={<AuthPage />} />
         <Route path="/loginemail" element={<EmailLogin />} />
-        <Route path="/level1" element={<Level1 />} />
+        <Route path="/level1" element={<Level1 handleImgClick={handleImgClick} />} />
       </Routes>
     </BrowserRouter>
   );
