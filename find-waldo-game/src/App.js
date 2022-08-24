@@ -66,6 +66,11 @@ function App() {
     const x = e.pageX - e.target.offsetLeft;
     const y = e.pageY - e.target.offsetTop;
     console.log(x, y);
+    if (x > 1390 && x < 1422 && (y > 463) & (y < 502)) {
+      alert('you found Waldo');
+    }
+    // x = (1390 - 1422)
+    // y = (463 - 502)
   };
 
   return (
