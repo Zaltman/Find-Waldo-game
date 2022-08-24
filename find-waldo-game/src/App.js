@@ -10,7 +10,8 @@ import EmailLogin from './components/EmailLogin';
 import Header from './components/Header';
 import { useState } from 'react';
 import Level1 from './components/Level1';
-
+// Initialize the FirebaseUI Widget using Firebase.
+// var ui = new firebaseui.auth.AuthUI(firebase.auth());
 const firebaseConfig = {
   apiKey: 'AIzaSyBWMBTSFZZbqkQY7weHsVi50NvIXJNUbqw',
   authDomain: 'find-waldo-game.firebaseapp.com',
