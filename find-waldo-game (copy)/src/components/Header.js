@@ -1,15 +1,11 @@
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 export default function Header(props) {
   const auth = getAuth();
-  // const [userEmail, setUserEmail] = useState(props.userEmail);
-
   let handleSignOut = props.handleSignOut;
   let userEmail = props.userEmail;
   let userElement;
-  // console.log({ userEmail });
-  if (userEmail == 'Guest' || userEmail == '') {
+  if (userEmail == 'Guest') {
     userElement = (
       <div className="flex h20px">
         <div className="userInfo">{userEmail}</div>

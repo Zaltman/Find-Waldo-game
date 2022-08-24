@@ -1,0 +1,72 @@
+body {
+  width: 100%;
+}
+
+.App {
+  text-align: center;
+}
+
+/* .App-logo {
+  height: 40vmin;
+  pointer-events: none;
+} */
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  height: 60px;
+  /* width: auto; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.h20px {
+  height: 20px;
+}
+
+a {
+  background-color: white;
+  text-decoration: none;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  height: fit-content;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#regForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.gamePage {
+  display: flex;
+  justify-content: center;
+}
+
+.gameImg {
+  /* width: 100%; */
+  display: block;
+}

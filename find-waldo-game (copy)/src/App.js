@@ -10,7 +10,8 @@ import EmailLogin from './components/EmailLogin';
 import Header from './components/Header';
 import { useState } from 'react';
 import Level1 from './components/Level1';
-
+// Initialize the FirebaseUI Widget using Firebase.
+// var ui = new firebaseui.auth.AuthUI(firebase.auth());
 const firebaseConfig = {
   apiKey: 'AIzaSyBWMBTSFZZbqkQY7weHsVi50NvIXJNUbqw',
   authDomain: 'find-waldo-game.firebaseapp.com',
@@ -27,18 +28,20 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 function App() {
-  const [userEmail, setUserEmail] = useState('Guest');
+  const [userEmail, setUserEmail] = useState('');
   const provider = new GoogleAuthProvider();
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
 
-      setUserEmail(user.email);
+      const uid = user.uid;
+      if (user) {
+        setUserEmail(user.email);
+      } else setUserEmail('Guest');
       console.log('auth state change logged in');
-      console.log(user.email);
+
       // ...
     } else {
       // User is signed out

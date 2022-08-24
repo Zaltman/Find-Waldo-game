@@ -4,7 +4,27 @@ import Header from './Header';
 import { Link } from 'react-router-dom';
 export default function EmailLogin() {
   const auth = getAuth();
+  let userEmail = '';
 
+  // onAuthStateChanged(auth, (user) => {
+  //   if (user) {
+  //     // User is signed in, see docs for a list of available properties
+  //     // https://firebase.google.com/docs/reference/js/firebase.User
+
+  //     const uid = user.uid;
+  //     console.log(user.email);
+  //     userEmail = user.email;
+  //     console.log('auth state change logged in');
+
+  //     console.log({ userEmail });
+  //     // ...
+  //   } else {
+  //     // User is signed out
+  //     console.log('auth state change sign out');
+
+  //     // ...
+  //   }
+  // });
   const {
     register,
     watch,
@@ -35,9 +55,6 @@ export default function EmailLogin() {
         console.log(errors.Password);
         passwordErrMsg = errorCode;
       });
-  };
-  let handleGoogleLoginClick = (e) => {
-    console.log(e.target);
   };
   let emailErrMsg = '';
   if (errors.Email) {
@@ -74,7 +91,6 @@ export default function EmailLogin() {
     <div>
       {/* <Header /> */}
       <form onSubmit={handleSubmit(onSubmit)} id="regForm">
-        <p>Login with email and password</p>
         <label htmlFor="emailInput">Email</label>
         <input
           type="text"
@@ -94,7 +110,6 @@ export default function EmailLogin() {
         {errors.Password && <span>{passwordErrMsg}</span>}
         <input type="submit" />
         <Link to={'/register'}>No account? Register</Link>
-        <button onClick={handleGoogleLoginClick}>Login with Google account</button>
       </form>
     </div>
   );
