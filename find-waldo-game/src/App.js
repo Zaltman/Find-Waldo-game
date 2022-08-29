@@ -28,7 +28,6 @@ const auth = getAuth(app);
 
 function App() {
   const [userEmail, setUserEmail] = useState('Guest');
-  const provider = new GoogleAuthProvider();
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -37,13 +36,12 @@ function App() {
       const uid = user.uid;
 
       setUserEmail(user.email);
-      console.log('auth state change logged in');
-      console.log(user.email);
+      // console.log('auth state change logged in');
+      // console.log(user.email);
       // ...
     } else {
       // User is signed out
-      console.log('auth state change sign out');
-
+      // console.log('auth state change sign out');
       // ...
     }
   });
@@ -51,7 +49,7 @@ function App() {
   function handleSignOut() {
     signOut(auth)
       .then(() => {
-        console.log('Sign-out successful.');
+        // console.log('Sign-out successful.');
         setUserEmail('Guest');
       })
       .catch((error) => {
@@ -61,14 +59,34 @@ function App() {
       });
   }
   let handleImgClick = (e) => {
+    function sendCoords(x, y) {
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+
+      const body = {
+        test: 'event',
+        level: 'level1',
+        cordsY: y,
+        cordsX: x,
+      };
+
+      const options = {
+        method: 'POST',
+        headers,
+        mode: 'cors',
+        body: JSON.stringify(body),
+      };
+      fetch('https://eoigvwbd7a4ked9.m.pipedream.net', options)
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+    }
+
     const x = e.pageX - e.target.offsetLeft;
     const y = e.pageY - e.target.offsetTop;
-    console.log(x, y);
-    if (x > 1390 && x < 1422 && (y > 463) & (y < 502)) {
-      alert('you found Waldo');
+    // console.log(x, y);
+    if (x && y) {
+      sendCoords(x, y);
     }
-    // x = (1390 - 1422)
-    // y = (463 - 502)
   };
 
   return (
@@ -80,7 +98,7 @@ function App() {
         <Route path="/homepage" element={<Homepage />} />
         <Route path="/gamepage" element={<GamePage />} />
         <Route path="/authpage" element={<AuthPage />} />
-        <Route path="/loginemail" element={<EmailLogin />} />
+        <Route path="/loginemail" element={<EmailLogin userEmail={userEmail} />} />
         <Route path="/level1" element={<Level1 handleImgClick={handleImgClick} />} />
       </Routes>
     </BrowserRouter>

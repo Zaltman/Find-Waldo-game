@@ -1,6 +1,5 @@
 import level1 from '../assetts/level1.jpg';
 export default function Level1(props) {
-  console.log(props);
   const handleImgClick = props.handleImgClick;
   return (
     <div className="gamePage">

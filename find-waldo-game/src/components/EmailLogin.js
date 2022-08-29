@@ -1,10 +1,16 @@
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth';
 import { useForm } from 'react-hook-form';
-import Header from './Header';
 import { Link } from 'react-router-dom';
-export default function EmailLogin() {
+export default function EmailLogin(props) {
   const auth = getAuth();
-
+  const provider = new GoogleAuthProvider();
+  const userEmail = props.userEmail;
   const {
     register,
     watch,
@@ -38,6 +44,28 @@ export default function EmailLogin() {
   };
   let handleGoogleLoginClick = (e) => {
     console.log(e.target);
+
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        window.location.href = '/';
+
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
   };
   let emailErrMsg = '';
   if (errors.Email) {
@@ -69,33 +97,35 @@ export default function EmailLogin() {
       passwordErrMsg = 'No user with this email';
     } else if (passwordErrMsg == '') passwordErrMsg = errors.Password.type;
   }
+  if (userEmail == 'Guest') {
+    return (
+      <div>
+        <form onSubmit={handleSubmit(onSubmit)} id="regForm">
+          <p>Login with email and password </p>
+          <label htmlFor="emailInput">Email</label>
+          <input
+            type="text"
+            id="emailInput"
+            placeholder="Email"
+            {...register('Email', { required: true, minLength: 4, pattern: /^\S+@\S+$/i })}
+          />
+          {errors.Email && <span>{emailErrMsg}</span>}
 
-  return (
-    <div>
-      {/* <Header /> */}
-      <form onSubmit={handleSubmit(onSubmit)} id="regForm">
-        <p>Login with email and password</p>
-        <label htmlFor="emailInput">Email</label>
-        <input
-          type="text"
-          id="emailInput"
-          placeholder="Email"
-          {...register('Email', { required: true, minLength: 4, pattern: /^\S+@\S+$/i })}
-        />
-        {errors.Email && <span>{emailErrMsg}</span>}
-
-        <label htmlFor="passwordInput">Password</label>
-        <input
-          id="passwordInput"
-          type="password"
-          placeholder="Password"
-          {...register('Password', { required: true, minLength: 6, maxLength: 20 })}
-        />
-        {errors.Password && <span>{passwordErrMsg}</span>}
-        <input type="submit" />
-        <Link to={'/register'}>No account? Register</Link>
-        <button onClick={handleGoogleLoginClick}>Login with Google account</button>
-      </form>
-    </div>
-  );
+          <label htmlFor="passwordInput">Password</label>
+          <input
+            id="passwordInput"
+            type="password"
+            placeholder="Password"
+            {...register('Password', { required: true, minLength: 6, maxLength: 20 })}
+          />
+          {errors.Password && <span>{passwordErrMsg}</span>}
+          <input type="submit" />
+          <Link to={'/register'}>No account? Register</Link>
+          <button onClick={handleGoogleLoginClick}>Login with Google account</button>
+        </form>
+      </div>
+    );
+  } else {
+    return <div>Already logged in</div>;
+  }
 }
