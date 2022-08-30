@@ -10,6 +10,10 @@ import EmailLogin from './components/EmailLogin';
 import Header from './components/Header';
 import { useState } from 'react';
 import Level1 from './components/Level1';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBWMBTSFZZbqkQY7weHsVi50NvIXJNUbqw',
@@ -30,10 +34,26 @@ function App() {
   const [userEmail, setUserEmail] = useState('Guest');
 
   onAuthStateChanged(auth, (user) => {
+    //popup successful login
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      },
+    });
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid;
+      Toast.fire({
+        icon: 'success',
+        title: 'Signed in successfully',
+      });
 
       setUserEmail(user.email);
       // console.log('auth state change logged in');
@@ -78,12 +98,76 @@ function App() {
       };
       fetch('https://eoigvwbd7a4ked9.m.pipedream.net', options)
         .then((response) => response.json())
-        .then((data) => console.log(data));
+        .then((data) => {
+          let isCordsCorrect = data.isCordsCorrect;
+          console.log(isCordsCorrect);
+          if (isCordsCorrect == true) alert('You found Waldo');
+          else if (isCordsCorrect == false) alert('Its not Waldo');
+        });
+
+      // Swal.fire({
+      //   title: 'Submit your Github username',
+      //   input: 'text',
+      //   inputAttributes: {
+      //     autocapitalize: 'off',
+      //   },
+      //   showCancelButton: true,
+      //   confirmButtonText: 'Look up',
+      //   showLoaderOnConfirm: true,
+      //   preConfirm: (login) => {
+      //     return fetch(`//api.github.com/users/${login}`)
+      //       .then((response) => {
+      //         if (!response.ok) {
+      //           throw new Error(response.statusText);
+      //         }
+      //         return response.json();
+      //       })
+      //       .catch((error) => {
+      //         Swal.showValidationMessage(`Request failed: ${error}`);
+      //       });
+      //   },
+      //   allowOutsideClick: () => !Swal.isLoading(),
+      // }).then((result) => {
+      //   if (result.isConfirmed) {
+      //     Swal.fire({
+      //       title: `${result.value.login}'s avatar`,
+      //       imageUrl: result.value.avatar_url,
+      //     });
+      //   }
+      // });
+
+      // (async () => {
+      //   /* inputOptions can be an object or Promise */
+      //   const inputOptions = new Promise((resolve) => {
+      //     setTimeout(() => {
+      //       resolve({
+      //         Waldo: 'Waldo',
+      //         Mage: 'Mage',
+      //         Blob: 'Blob',
+      //       });
+      //     }, 1000);
+      //   });
+
+      //   const { value: color } = await Swal.fire({
+      //     title: 'Select Character',
+      //     input: 'radio',
+      //     inputOptions: inputOptions,
+      //     inputValidator: (value) => {
+      //       if (!value) {
+      //         return 'You need to choose something!';
+      //       }
+      //     },
+      //   });
+
+      //   if (color) {
+      //     Swal.fire({ html: `You selected: ${color}` });
+      //   }
+      // })();
     }
 
     const x = e.pageX - e.target.offsetLeft;
     const y = e.pageY - e.target.offsetTop;
-    // console.log(x, y);
+    console.log(x, y);
     if (x && y) {
       sendCoords(x, y);
     }
