@@ -11,9 +11,7 @@ import Header from './components/Header';
 import { useState } from 'react';
 import Level1 from './components/Level1';
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-
-const MySwal = withReactContent(Swal);
+import ChooseCharacterModal from './components/ChooseCharacterModal';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBWMBTSFZZbqkQY7weHsVi50NvIXJNUbqw',
@@ -32,10 +30,10 @@ const auth = getAuth(app);
 
 function App() {
   const [userEmail, setUserEmail] = useState('Guest');
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   onAuthStateChanged(auth, (user) => {
-    //popup successful login
-    const Toast = Swal.mixin({
+    //popup on successful login
+    const ToastAuthSuccess = Swal.mixin({
       toast: true,
       position: 'top-end',
       showConfirmButton: false,
@@ -50,7 +48,7 @@ function App() {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid;
-      Toast.fire({
+      ToastAuthSuccess.fire({
         icon: 'success',
         title: 'Signed in successfully',
       });
@@ -104,78 +102,20 @@ function App() {
           if (isCordsCorrect == true) alert('You found Waldo');
           else if (isCordsCorrect == false) alert('Its not Waldo');
         });
-
-      // Swal.fire({
-      //   title: 'Submit your Github username',
-      //   input: 'text',
-      //   inputAttributes: {
-      //     autocapitalize: 'off',
-      //   },
-      //   showCancelButton: true,
-      //   confirmButtonText: 'Look up',
-      //   showLoaderOnConfirm: true,
-      //   preConfirm: (login) => {
-      //     return fetch(`//api.github.com/users/${login}`)
-      //       .then((response) => {
-      //         if (!response.ok) {
-      //           throw new Error(response.statusText);
-      //         }
-      //         return response.json();
-      //       })
-      //       .catch((error) => {
-      //         Swal.showValidationMessage(`Request failed: ${error}`);
-      //       });
-      //   },
-      //   allowOutsideClick: () => !Swal.isLoading(),
-      // }).then((result) => {
-      //   if (result.isConfirmed) {
-      //     Swal.fire({
-      //       title: `${result.value.login}'s avatar`,
-      //       imageUrl: result.value.avatar_url,
-      //     });
-      //   }
-      // });
-
-      // (async () => {
-      //   /* inputOptions can be an object or Promise */
-      //   const inputOptions = new Promise((resolve) => {
-      //     setTimeout(() => {
-      //       resolve({
-      //         Waldo: 'Waldo',
-      //         Mage: 'Mage',
-      //         Blob: 'Blob',
-      //       });
-      //     }, 1000);
-      //   });
-
-      //   const { value: color } = await Swal.fire({
-      //     title: 'Select Character',
-      //     input: 'radio',
-      //     inputOptions: inputOptions,
-      //     inputValidator: (value) => {
-      //       if (!value) {
-      //         return 'You need to choose something!';
-      //       }
-      //     },
-      //   });
-
-      //   if (color) {
-      //     Swal.fire({ html: `You selected: ${color}` });
-      //   }
-      // })();
     }
-
+    setIsModalOpen(true);
     const x = e.pageX - e.target.offsetLeft;
     const y = e.pageY - e.target.offsetTop;
     console.log(x, y);
     if (x && y) {
-      sendCoords(x, y);
+      // sendCoords(x, y);
     }
   };
 
   return (
     <BrowserRouter>
       <Header userEmail={userEmail} handleSignOut={handleSignOut} />
+      <ChooseCharacterModal isModalOpen={isModalOpen} />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/register" element={<Register />} />
